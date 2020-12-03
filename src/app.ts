@@ -1,6 +1,7 @@
 import express, { Application } from "express";
 import cors from "cors";
 import { DenouncementRoutes } from "./components/denouncement";
+import { AgentRoutes } from "./components/Agent";
 import mongoose from "mongoose";
 
 class App {
@@ -23,6 +24,7 @@ class App {
   }
   private routes() {
     this.express.use("/greenhelp", DenouncementRoutes);
+    this.express.use("/agent", AgentRoutes)
   }
 }
 

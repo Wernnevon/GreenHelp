@@ -1,15 +1,11 @@
-import { Status } from './status';
-import DenouncementModel from "./model";
-export default class DenouncementService {
-    public static async create(denouncement: {
-      image: string[];
-      description: string;
-      latitude: string;
-      longitude: string;
-      code: string;
+import {AgentModel} from "./index";
+export default class AgentService {
+    public static async create(agent: {
+      name: string;
+      subsNumber: string;
     }) {
         try {
-            const created =  await DenouncementModel.create(denouncement);
+            const created =  await AgentModel.create(agent);
             return created;
         } catch (error) {
             console.error(error)
@@ -18,7 +14,7 @@ export default class DenouncementService {
   
     public static async findAll() {
         try {
-            return await DenouncementModel.find();
+            return await AgentModel.find();
         } catch (error) {
             console.error(error)
         }
@@ -26,7 +22,7 @@ export default class DenouncementService {
   
     public static async findById(id: string) {
         try {
-            const result = await DenouncementModel.findOne({code:id})
+            const result = await AgentModel.findOne({subsNumber:id})
             if (result){
                 return result
             }else(
@@ -38,13 +34,12 @@ export default class DenouncementService {
         }
     }
   
-    public static async update(id: string, denouncement: {
-        status: Status;
-        feedback: boolean; 
+    public static async update(id: string, agent: {
+        name: string;
     }) {
       
         try {
-            const updated =  await DenouncementModel.findOneAndUpdate({code:id},denouncement, {new: true});
+            const updated =  await AgentModel.findOneAndUpdate({subsNumber:id},agent, {new: true});
             return updated;
             
         } catch (error) {
@@ -54,7 +49,7 @@ export default class DenouncementService {
   
     public static async delete(id: string) {
         try {
-            const deleted = await DenouncementModel.findOneAndDelete({code:id})
+            const deleted = await AgentModel.findOneAndDelete({subsNumber:id})
             return deleted;
         } catch (error) {
             console.error(error)
