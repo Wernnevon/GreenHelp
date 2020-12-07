@@ -1,17 +1,17 @@
 import { Router } from "express";
 
-import { AgentController } from "./index";
+import { AgentController, AgentMiddleware } from "./index";
 
 const routes = Router();
 
-routes.post("/", AgentController.create);
+routes.post("/", AgentMiddleware.filterBody, AgentController.create);
 
-routes.get("/",AgentController.findAll);
+routes.get("/", AgentMiddleware.filterFindAll, AgentMiddleware.filterIdExists, AgentController.findAll);
 
-routes.get("/:id",AgentController.findById);
+routes.get("/:id", AgentMiddleware.filterFindAll, AgentMiddleware.filterIdExists, AgentController.findById);
 
-routes.put("/:id", AgentController.update);
+routes.put("/:id", AgentMiddleware.filterUpdate, AgentMiddleware.filterIdExists, AgentController.update);
 
-routes.delete("/:id", AgentController.delete);
+routes.delete("/:id", AgentMiddleware.filterFindAll, AgentMiddleware.filterIdExists, AgentController.delete);
 
 export default routes;

@@ -1,17 +1,16 @@
 import { Router } from "express";
 
-import { DenouncementController } from "./index";
-
+import { DenouncementController, DenouncementMiddleware } from "./index";
 const routes = Router();
 
-routes.post("/", DenouncementController.create);
+routes.post("/", DenouncementMiddleware.filterBody, DenouncementController.create);
 
-routes.get("/",DenouncementController.findAll);
+routes.get("/", DenouncementMiddleware.filterFindAll, DenouncementController.findAll);
 
-routes.get("/:id",DenouncementController.findById);
+routes.get("/:id", DenouncementMiddleware.filterFindAll, DenouncementMiddleware.filterIdExists, DenouncementController.findById);
 
-routes.put("/:id", DenouncementController.update);
+routes.put("/:id", DenouncementMiddleware.filterUpdate, DenouncementMiddleware.filterIdExists, DenouncementController.update);
 
-routes.delete("/:id", DenouncementController.delete);
+routes.delete("/:id", DenouncementMiddleware.filterFindAll, DenouncementMiddleware.filterIdExists, DenouncementController.delete);
 
 export default routes;
