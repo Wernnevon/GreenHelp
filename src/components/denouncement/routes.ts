@@ -18,6 +18,6 @@ routes.get("/:id", DenouncementMiddleware.filterFindAll, DenouncementMiddleware.
 
 routes.put("/:id", DenouncementMiddleware.filterUpdate, DenouncementMiddleware.filterIdExists, DenouncementController.update);
 
-routes.delete("/:id", DenouncementMiddleware.filterFindAll, DenouncementMiddleware.filterIdExists, DenouncementController.delete);
+routes.delete("/:id", DenouncementMiddleware.filterDelete, DenouncementMiddleware.filterBody, DenouncementMiddleware.filterIdExists, DenouncementController.delete);
 
 export default routes;

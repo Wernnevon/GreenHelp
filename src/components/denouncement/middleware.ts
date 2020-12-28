@@ -1,5 +1,7 @@
+import path from 'path';
 import { Request, Response, NextFunction } from "express";
 import { DenouncementService } from "./index";
+import fs from 'fs'
 
 export default class DenouncementMiddleware {
   public static async filterBody(
@@ -47,9 +49,10 @@ export default class DenouncementMiddleware {
   ) {
     //   veifica se o code está disponível para uso
     const denouncimentState = await DenouncementService.findById(req.body.code);
-
+    const imgPath = path.resolve(__dirname, '../../ImageUpload')
       if(denouncimentState){
-        return res.status(400).send('Requisição não pode ser concluída, porque o ID já está em uso')
+        req.files.map(({filename}) => { fs.unlink(imgPath + '/' + filename, (err)=>{console.log(err)})});
+        return res.status(400).send('Requisição não pode ser concluída, porque o ID já está em uso');
       }
 
     
@@ -66,4 +69,15 @@ export default class DenouncementMiddleware {
     }
     next();
   }
-}
+  public static async filterDelete(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ){
+    const imgPath = path.resolve(__dirname, '../../ImageUpload');
+    DenouncementService.findById(req.params.id).then(({image}) =>{
+      image.map(filename => { fs.unlink(`${imgPath}/${filename}`, (error)=>{console.log(error)})})
+    });
+    next();
+    }
+  }
