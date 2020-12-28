@@ -1,9 +1,16 @@
+import multer  from 'multer';
 import { Router } from "express";
 
 import { DenouncementController, DenouncementMiddleware } from "./index";
-const routes = Router();
+import uploadConfig from "../config/upload";
 
-routes.post("/", DenouncementMiddleware.filterBody, DenouncementController.create);
+const routes = Router();
+const uploadMulter = multer(uploadConfig);
+
+routes.post("/",
+uploadMulter.array("image"),
+DenouncementMiddleware.filterIdValidate,
+DenouncementController.create);
 
 routes.get("/", DenouncementMiddleware.filterFindAll, DenouncementController.findAll);
 

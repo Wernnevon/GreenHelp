@@ -3,9 +3,28 @@ import { DenouncementService } from "./index";
 
 export default class DenouncementController {
   public static async create(req: Request, res: Response) {
-    return DenouncementService.create(req.body)
-      .then((rs) => res.status(201).json(rs).send())
-      .catch((err) => res.status(400).json({ error: err.message }));
+
+    const {
+      description,
+      latitude,
+      longitude,
+      code
+    } = req.body;
+
+    const reImages = req.files;
+
+    if (!Array.isArray(reImages)) {
+      return res.status(400).json("Upload incorreto de imagem");
+    }
+    const image = reImages.map((imagem) =>  imagem.filename);
+    return DenouncementService.create({
+      image,
+      description,
+      latitude,
+      longitude,
+      code
+    }).then((rs) => res.status(201).json(rs).send())
+    .catch((err) => res.status(400).json(err.message));
   }
 
   public static async findAll(req: Request, res: Response) {

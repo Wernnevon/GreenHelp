@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction, json } from "express";
-import { DenouncementService } from ".";
+import { Request, Response, NextFunction } from "express";
+import { DenouncementService } from "./index";
 
 export default class DenouncementMiddleware {
   public static async filterBody(
@@ -7,12 +7,16 @@ export default class DenouncementMiddleware {
     res: Response,
     next: NextFunction
   ) {
-      this.filterIdValidate(req, res, next);
+    try {
       const denouncementContent = req.body;
     if(!(denouncementContent.image && denouncementContent.description && denouncementContent.latitude && denouncementContent.longitude && denouncementContent.code)){
       return res.status(400).send('Dados insuficientes')
     }
     next();
+    } catch (error) {
+      console.log(error);
+    }  
+   
   }
   public static async filterFindAll(
     req: Request,
@@ -29,7 +33,7 @@ export default class DenouncementMiddleware {
     res: Response,
     next: NextFunction
   ) {
-      const denouncimentState = DenouncementService.findById(req.params.id)
+      const denouncimentState = await DenouncementService.findById(req.params.id)
       if(!denouncimentState){
         return res.status(404).send('Código não encontrado')
       }
@@ -42,10 +46,12 @@ export default class DenouncementMiddleware {
     next: NextFunction
   ) {
     //   veifica se o code está disponível para uso
-      const denouncimentState = DenouncementService.findById(req.body.code)
+    const denouncimentState = await DenouncementService.findById(req.body.code);
+
       if(denouncimentState){
         return res.status(400).send('Requisição não pode ser concluída, porque o ID já está em uso')
       }
+
     
     next();
   }

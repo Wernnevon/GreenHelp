@@ -9,6 +9,7 @@ export default class DenouncementService {
       code: string;
     }) {
         try {
+            console.log(denouncement.image)
             const created =  await DenouncementModel.create(denouncement);
             return created;
         } catch (error) {
@@ -27,11 +28,7 @@ export default class DenouncementService {
     public static async findById(id: string) {
         try {
             const result = await DenouncementModel.findOne({code:id})
-            if (result){
-                return result
-            }else(
-                console.log("erro")
-            )
+            return result
             
         } catch (error) {
             console.error(error)
