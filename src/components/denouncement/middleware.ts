@@ -49,9 +49,13 @@ export default class DenouncementMiddleware {
   ) {
     //   veifica se o code está disponível para uso
     const denouncimentState = await DenouncementService.findById(req.body.code);
-    const imgPath = path.resolve(__dirname, '../../ImageUpload')
       if(denouncimentState){
-        req.files.map(({filename}) => { fs.unlink(imgPath + '/' + filename, (err)=>{console.log(err)})});
+        const files = Object.values(req.files).flat(1)
+
+        files.forEach((file) => {
+          fs.unlink(file.path, () => {})
+        })
+
         return res.status(400).send('Requisição não pode ser concluída, porque o ID já está em uso');
       }
 
@@ -75,8 +79,10 @@ export default class DenouncementMiddleware {
     next: NextFunction
   ){
     const imgPath = path.resolve(__dirname, '../../ImageUpload');
-    DenouncementService.findById(req.params.id).then(({image}) =>{
+    const audioPath = path.resolve(__dirname, '../../AudioUpload');
+    DenouncementService.findById(req.params.id).then(({image, description}) =>{
       image.map(filename => { fs.unlink(`${imgPath}/${filename}`, (error)=>{console.log(error)})})
+      description.map(filename => { fs.unlink(`${audioPath}/${filename}`, (error)=>{console.log(error)})})
     });
     next();
     }

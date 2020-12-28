@@ -11,15 +11,25 @@ export default class DenouncementController {
       code
     } = req.body;
 
-    const reImages = req.files;
+    const reImages = req.files.image;
 
     if (!Array.isArray(reImages)) {
       return res.status(400).json("Upload incorreto de imagem");
     }
+
     const image = reImages.map((imagem) =>  imagem.filename);
+
+    const reAudios = req.files.audio;
+
+    if (!Array.isArray(reAudios)) {
+      return res.status(400).json("Upload incorreto de audio");
+    }
+
+    const audio = reAudios.map((reAudio) =>  reAudio.filename);
+
     return DenouncementService.create({
       image,
-      description,
+      description: audio,
       latitude,
       longitude,
       code

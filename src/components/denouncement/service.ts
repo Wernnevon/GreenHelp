@@ -3,13 +3,12 @@ import DenouncementModel from "./model";
 export default class DenouncementService {
     public static async create(denouncement: {
       image: string[];
-      description: string;
+      description: string[];
       latitude: string;
       longitude: string;
       code: string;
     }) {
         try {
-            console.log(denouncement.image)
             const created =  await DenouncementModel.create(denouncement);
             return created;
         } catch (error) {

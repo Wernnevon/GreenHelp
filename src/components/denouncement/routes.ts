@@ -8,7 +8,11 @@ const routes = Router();
 const uploadMulter = multer(uploadConfig);
 
 routes.post("/",
-uploadMulter.array("image"),
+uploadMulter.fields([{
+  name: 'audio'
+}, {
+  name: 'image'
+}]),
 DenouncementMiddleware.filterIdValidate,
 DenouncementController.create);
 
@@ -18,6 +22,6 @@ routes.get("/:id", DenouncementMiddleware.filterFindAll, DenouncementMiddleware.
 
 routes.put("/:id", DenouncementMiddleware.filterUpdate, DenouncementMiddleware.filterIdExists, DenouncementController.update);
 
-routes.delete("/:id", DenouncementMiddleware.filterDelete, DenouncementMiddleware.filterBody, DenouncementMiddleware.filterIdExists, DenouncementController.delete);
+routes.delete("/:id", DenouncementMiddleware.filterDelete, DenouncementMiddleware.filterIdExists, DenouncementController.delete);
 
 export default routes;
