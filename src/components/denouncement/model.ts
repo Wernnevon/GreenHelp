@@ -32,6 +32,9 @@ const DenouncementSchema = new mongoose.Schema({
     code: {
         type: String,
         required: true
+    },
+    agentCode: {
+        type: String,
     }
 });
 

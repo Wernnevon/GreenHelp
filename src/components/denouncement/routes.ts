@@ -16,6 +16,8 @@ uploadMulter.fields([{
 DenouncementMiddleware.filterIdValidate,
 DenouncementController.create);
 
+routes.put("/updateStatus", DenouncementController.updateStatus);
+
 routes.get("/", DenouncementMiddleware.filterFindAll, DenouncementController.findAll);
 
 routes.get("/:id", DenouncementMiddleware.filterFindAll, DenouncementMiddleware.filterIdExists, DenouncementController.findById);

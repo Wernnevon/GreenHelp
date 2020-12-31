@@ -47,6 +47,10 @@ export default class DenouncementService {
             console.error(error)
         }
     }
+
+    public static async updateStatus(denouncementCode: string, subsNumber: string, status: string) {
+        const updated =  await DenouncementModel.findOneAndUpdate({code: denouncementCode}, { agentNumber: subsNumber, status });
+      }
   
     public static async delete(id: string) {
         try {

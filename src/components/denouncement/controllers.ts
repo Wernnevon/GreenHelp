@@ -61,6 +61,14 @@ export default class DenouncementController {
     }
   }
 
+  public static async updateStatus(req: Request, res: Response) {
+    const { denouncementCode, subsNumber, status } = req.body;
+
+    console.log('olha eu aqui')
+
+    await DenouncementService.updateStatus(denouncementCode, subsNumber, status)
+  }
+
   public static async delete(req: Request, res: Response) {
     return DenouncementService.delete(req.params.id)
       .then(() => res.status(204).send())
