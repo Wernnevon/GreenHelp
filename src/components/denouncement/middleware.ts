@@ -68,7 +68,7 @@ export default class DenouncementMiddleware {
     next: NextFunction
   ) {
     const denouncementContent = req.body;
-    if(!(denouncementContent.feedback && denouncementContent.status)){
+    if(!(denouncementContent.feeback && denouncementContent.status)){
       return res.status(406).send('Conteúdo não válido para os parametros do servidor')
     }
     next();
