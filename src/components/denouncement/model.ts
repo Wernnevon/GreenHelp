@@ -26,8 +26,8 @@ const DenouncementSchema = new mongoose.Schema({
         required: true,
     },
     status: {
-        type: Status,
-        default: Status.ENVIADO,
+        type: String,
+        default: 'ENVIADO',
     },
     code: {
         type: String,
